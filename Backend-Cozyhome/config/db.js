@@ -15,7 +15,6 @@ export const sequelize = new Sequelize(
     }
 );
 
-
 export const configDb = async () => {
     try {
         await sequelize.authenticate();
