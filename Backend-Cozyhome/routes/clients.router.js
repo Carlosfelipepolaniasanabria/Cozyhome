@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { Users } from "../entity/clients.entity.js";
+import { login } from "../controllers/auth.controller.js";
 import { body, param } from "express-validator";
 import donenv from "dotenv";
 
@@ -7,8 +8,12 @@ donenv.configDotenv();
 
 const router = Router();
 
+router.get(
+
+);
+
 router.post(
-    "/",
+    "/Register",
     [
       body("identificacion").isNumeric().isInt({ min:4, max:50}),
       body("primer_Nombre").isString().exists(),
@@ -31,5 +36,8 @@ router.post(
         });
     }
 );
+
+
+router.post("/login", login);
 
 export default router;

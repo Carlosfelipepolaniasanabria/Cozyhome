@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 configDb();
 Users.sync();
-app.use("/Register",CreateClients)
+app.use("/API",CreateClients)
 
 server.listen(PORT, () => {
     console.log("Listening on port 8000");
