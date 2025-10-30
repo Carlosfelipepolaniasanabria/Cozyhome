@@ -25,7 +25,7 @@ export default function Registro(){
         e.preventDefault();
 
         try {
-        const res = await fetch("http://localhost:8000/Register", {
+        const res = await fetch("http://localhost:8000/Register/API", {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
