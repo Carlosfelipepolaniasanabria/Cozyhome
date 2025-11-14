@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-
-export default function Registro(){
-
+export default function Registro() {
     const [formData, setFormData] = useState({
         primer_Nombre: "",
         segundo_Nombre: "",
@@ -14,10 +13,10 @@ export default function Registro(){
     });
 
     const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
         });
     };
 
@@ -25,53 +24,148 @@ export default function Registro(){
         e.preventDefault();
 
         try {
-        const res = await fetch("http://localhost:8000/Register/API", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-        });
+            const res = await fetch("http://localhost:8000/Register/API", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
 
-      const data = await res.json();
+            const data = await res.json();
 
-      if (res.ok) {
-        alert("Usuario registrado correctamente ");
-        console.log("Datos guardados:", data);
-        setFormData({
-          primer_Nombre: "",
-          segundo_Nombre: "",
-          primer_Apellido: "",
-          segundo_Apellido: "",
-          identificacion: "",
-          correo: "",
-          contrasena: "",
-        });
+            if (res.ok) {
+                alert("Usuario registrado correctamente");
+                console.log("Datos guardados:", data);
+                setFormData({
+                    primer_Nombre: "",
+                    segundo_Nombre: "",
+                    primer_Apellido: "",
+                    segundo_Apellido: "",
+                    identificacion: "",
+                    correo: "",
+                    contrasena: "",
+                });
             } else {
                 alert(`Error: ${data.message}`);
             }
-            } catch (error) {
+        } catch (error) {
             console.error("Error en el registro:", error);
-            alert("No se pudo conectar con el servidor ");
-            }
-        };
+            alert("No se pudo conectar con el servidor");
+        }
+    };
 
-        
+    return (       
+        <div className="login-page">
+            <div className="cozy-login-container" style={{ maxWidth: '500px' }}> 
+                <div className="cozy-header">
+                    <h2 className="cozy-title">Crear Cuenta</h2>
+                    <p className="cozy-subtitle">
+                        O <Link to="/login" className="cozy-link-inline">inicia sesión</Link>
+                    </p>
+                </div>
+                
+                <section>
+                    <form className="cozy-form" onSubmit={handleSubmit}>
+                        <div className="cozy-input-group">
+                            <label htmlFor="primer_Nombre">Primer Nombre</label>
+                            <input 
+                                id="primer_Nombre"
+                                name="primer_Nombre"
+                                className="cozy-input"
+                                placeholder='Tu primer nombre'
+                                value={formData.primer_Nombre}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        
+                        <div className="cozy-input-group">
+                            <label htmlFor="segundo_Nombre">Segundo Nombre</label>
+                            <input 
+                                id="segundo_Nombre"
+                                name="segundo_Nombre"
+                                className="cozy-input"
+                                placeholder='Tu segundo nombre'
+                                value={formData.segundo_Nombre}
+                                onChange={handleChange}
+                            />
+                        </div>
 
-    return(       
-        <div> 
-            <section>
-               <form onSubmit={handleSubmit}>
-                    <input name = "primer_Nombre" placeholder='Primer Nombre' onChange={handleChange}/>
-                    <input name = "segundo_Nombre" placeholder='Segundo Nombre' onChange={handleChange}/>
-                    <input name = "primer_Apellido" placeholder='Primer Apellido' onChange={handleChange}/>
-                    <input name = "segundo_Apellido" placeholder='Segundo Apellido'onChange={handleChange}/>
-                    <input name = "identificacion" placeholder='Identificación' onChange={handleChange}/>
-                    <input name = "correo" placeholder='Correo' onChange={handleChange}/>
-                    <input name = "contrasena" type ='password' placeholder='Contraseña' onChange={handleChange}/>
-                    <button type="submit">Registrarse</button>
-               </form>
-            </section>
+                        <div className="cozy-input-group">
+                            <label htmlFor="primer_Apellido">Primer Apellido</label>
+                            <input 
+                                id="primer_Apellido"
+                                name="primer_Apellido"
+                                className="cozy-input"
+                                placeholder='Tu primer apellido'
+                                value={formData.primer_Apellido}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        
+                        <div className="cozy-input-group">
+                            <label htmlFor="segundo_Apellido">Segundo Apellido</label>
+                            <input 
+                                id="segundo_Apellido"
+                                name="segundo_Apellido"
+                                className="cozy-input"
+                                placeholder='Tu segundo apellido'
+                                value={formData.segundo_Apellido}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="cozy-input-group">
+                            <label htmlFor="identificacion">Identificación</label>
+                            <input 
+                                id="identificacion"
+                                name="identificacion"
+                                className="cozy-input"
+                                placeholder='Tu número de identificación'
+                                value={formData.identificacion}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        
+                        <div className="cozy-input-group">
+                            <label htmlFor="correo">Correo Electrónico</label>
+                            <input 
+                                id="correo"
+                                name="correo"
+                                className="cozy-input"
+                                type="email"
+                                placeholder='tu.correo@ejemplo.com'
+                                value={formData.correo}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        
+                        <div className="cozy-input-group">
+                            <label htmlFor="contrasena">Contraseña</label>
+                            <input 
+                                id="contrasena"
+                                name="contrasena"
+                                className="cozy-input"
+                                type='password' 
+                                placeholder='Crea una contraseña segura'
+                                value={formData.contrasena}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        
+                        <button type="submit" className="cozy-button">Registrarse</button>
+                    </form>
+                    
+                    <div className="cozy-links">
+                        <Link to="/" className="cozy-link">Volver al Inicio</Link>
+                    </div>
+                </section>
+            </div>
         </div>       
     );
 }
