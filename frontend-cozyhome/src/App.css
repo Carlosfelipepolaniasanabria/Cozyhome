@@ -1,6 +1,531 @@
-body {
-  background-color: #f6f7f8;
+/* App.css - Estilos completos para Cozy Home */
+
+/* Reset y estilos generales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background-color: #f8f5f0;
+}
 
+/* Navbar Styles */
+.cozy-navbar {
+  background: linear-gradient(135deg, #f8f5f0 0%, #f0ebe1 100%) !important;
+  border-bottom: 2px solid #e8e2d6 !important;
+  padding: 1rem 0;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+}
 
+.cozy-brand {
+  color: #2c5530 !important;
+  font-size: 1.8rem !important;
+  font-weight: bold;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  margin-right: 2rem;
+}
+
+.cozy-nav-link {
+  color: #5d6d5d !important;
+  font-weight: 500;
+  margin: 0 0.8rem;
+  padding: 0.5rem 1rem !important;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.cozy-nav-link:hover {
+  color: #2c5530 !important;
+  background-color: rgba(167, 140, 93, 0.1);
+  transform: translateY(-1px);
+}
+
+.cozy-btn-primary {
+  background: linear-gradient(135deg, #a78c5d 0%, #8a6e3d 100%) !important;
+  border: none !important;
+  color: white !important;
+  padding: 0.6rem 1.5rem !important;
+  border-radius: 8px !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-left: 0.5rem;
+}
+
+.cozy-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(167, 140, 93, 0.3);
+}
+
+.cozy-btn-secondary {
+  border: 2px solid #a78c5d !important;
+  color: #a78c5d !important;
+  background: transparent !important;
+  padding: 0.6rem 1.5rem !important;
+  border-radius: 8px !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-left: 0.5rem;
+}
+
+.cozy-btn-secondary:hover {
+  background: #a78c5d !important;
+  color: white !important;
+  transform: translateY(-2px);
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Hero Section con imagen */
+.cozy-hero {
+  background: linear-gradient(135deg, #f8f5f0 0%, #f0ebe1 100%);
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  width: 100%;
+  gap: 2rem;
+}
+
+/* Imagen a la izquierda - tamaño optimizado */
+.hero-image {
+  flex: 1;
+  text-align: center;
+  order: 1; /* Imagen a la izquierda */
+}
+
+.hero-image img {
+  width: 90%;
+  max-width: 520px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Texto a la derecha */
+.hero-content {
+  flex: 1;
+  max-width: 500px;
+  order: 2; /* Texto a la derecha */
+}
+
+.hero-title {
+  color: #2c5530;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.hero-subtitle {
+  color: #6b7280;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.hero-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #d1c7b7, transparent);
+  margin: 2rem 0;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero-btn {
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  display: inline-block;
+}
+
+.hero-btn-primary {
+  background: linear-gradient(135deg, #a78c5d 0%, #8a6e3d 100%);
+  color: white;
+  border: none;
+}
+
+.hero-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(167, 140, 93, 0.3);
+  color: white;
+}
+
+.hero-btn-secondary {
+  background: transparent;
+  color: #a78c5d;
+  border: 2px solid #a78c5d;
+}
+
+.hero-btn-secondary:hover {
+  background: #a78c5d;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  
+  .hero-content {
+    max-width: 100%;
+    order: 2;
+  }
+  
+  .hero-image {
+    order: 1;
+  }
+  
+  .hero-image img {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .cozy-brand {
+    font-size: 1.5rem !important;
+  }
+  
+  .cozy-nav-link {
+    margin: 0 0.3rem;
+    padding: 0.4rem 0.8rem !important;
+  }
+}
+
+/* Estilos para las páginas de Login y Registro */
+.cozy-login-container {
+  background: white;
+  padding: 3rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid #e8e2d6;
+  margin: 2rem auto;
+}
+
+.cozy-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.cozy-title {
+  color: #2c5530;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.cozy-subtitle {
+  color: #6b7280;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.cozy-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #d1c7b7, transparent);
+  margin: 1.5rem 0;
+}
+
+.cozy-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cozy-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cozy-input-group label {
+  color: #4a5568;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.cozy-input {
+  padding: 14px 16px;
+  border: 2px solid #e8e2d6;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background: #fefdfb;
+}
+
+.cozy-input:focus {
+  outline: none;
+  border-color: #a78c5d;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(167, 140, 93, 0.1);
+}
+
+.cozy-input::placeholder {
+  color: #a0aec0;
+}
+
+.cozy-button {
+  padding: 16px;
+  background: linear-gradient(135deg, #a78c5d 0%, #8a6e3d 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  margin-top: 0.5rem;
+}
+
+.cozy-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(167, 140, 93, 0.3);
+}
+
+.cozy-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f0ebe1;
+}
+
+.cozy-link {
+  color: #a78c5d;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.cozy-link:hover {
+  color: #8a6e3d;
+  text-decoration: underline;
+}
+
+/* Estilos específicos para el formulario de registro */
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-row .cozy-input-group {
+  flex: 1;
+}
+
+/* Responsive para el formulario de registro */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+/* ===== Página de productos ===== */
+
+.products-page {
+  background-color: #f5f7fb;
+  min-height: calc(100vh - 70px);
+  padding: 2.5rem 2.5rem 3rem;
+}
+
+.products-container {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+/* Encabezado superior (categorías grandes + buscador) */
+
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.75rem;
+}
+
+.products-main-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.products-main-link {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.products-main-link.active {
+  color: #111827;
+  font-weight: 600;
+}
+
+.products-search {
+  width: 260px;
+}
+
+.products-search-input {
+  width: 100%;
+  border-radius: 999px;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  background-color: #e5e7eb;
+  outline: none;
+}
+
+/* Filtros (chips azules) */
+
+.product-filters {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.filter-pill {
+  border-radius: 999px;
+  border: none;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.85rem;
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.filter-pill-active {
+  background-color: #1d4ed8;
+  color: #ffffff;
+}
+
+/* Grid de productos */
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Tarjeta de producto */
+
+.product-card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 0.75rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-image-wrapper {
+  border-radius: 14px;
+  overflow: hidden;
+  background-color: #f9fafb;
+  margin-bottom: 0.75rem;
+}
+
+.product-image {
+  display: block;
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+
+.product-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.4rem;
+}
+
+.product-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.product-price {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Paginación */
+
+.products-pagination {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.page-dot,
+.page-arrow {
+  border-radius: 999px;
+  border: none;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.8rem;
+  background-color: transparent;
+  color: #6b7280;
+}
+
+.page-dot-active {
+  background-color: #1d4ed8;
+  color: #ffffff;
+}
+
+/* Responsivo */
+
+@media (max-width: 900px) {
+  .products-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .products-search {
+    width: 100%;
+  }
+
+  .products-main-nav {
+    flex-wrap: wrap;
+  }
+}
