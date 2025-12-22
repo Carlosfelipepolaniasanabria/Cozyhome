@@ -6,11 +6,41 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const [rememberMe, setRememberMe] = useState(false)
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        // Aquí irá tu lógica de autenticación
-        console.log('Datos de login:', { email, password, rememberMe })
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+        const response = await fetch("http://localhost:8000/API/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                correo: email,
+                contrasena: password,
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.error || "Error en el login");
+            return;
+        }
+
+        alert("Login exitoso");
+
+        console.log("Usuario logeado:", data.user);
+
+        // Guardar usuario si quieres
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+    } catch (error) {
+        console.error("Error de login:", error);
+        alert("No se pudo conectar con el servidor");
     }
+};
+
 
     return(       
         <div className="login-page">
