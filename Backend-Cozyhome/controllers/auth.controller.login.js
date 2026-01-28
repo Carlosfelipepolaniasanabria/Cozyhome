@@ -1,5 +1,5 @@
 import { Users } from "../entity/clients.entity.js";
-import bcrypt from "bcryptjs";
+/* import bcrypt from "bcryptjs"; */
 import jwt from "jsonwebtoken";
 
 export const login = async (req, res) => {
@@ -12,7 +12,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // Buscar usuario por correo
     const user = await Users.findOne({ where: { correo } });
 
     if (!user) {
@@ -21,29 +20,28 @@ export const login = async (req, res) => {
       });
     }
 
-    // Comparar contraseñas
-    const validPassword = await bcrypt.compare(contrasena, user.contrasena);
+    if (contrasena !== user.contrasena) {
+  return res.status(401).json({
+    message: "Contraseña incorrecta",
+  });
+}
 
-    if (!validPassword) {
-      return res.status(401).json({
-        message: "Contraseña incorrecta",
-      });
-    }
 
-    // Crear token opcional
     const token = jwt.sign(
       { id: user.id, rol: user.rol },
       process.env.JWT_SECRET,
       { expiresIn: "2h" }
     );
 
+    // 🔴 NO devolver la contraseña
+    const {
+      contrasena: _,
+      ...userSinPassword
+    } = user.dataValues;
+
     return res.json({
       message: "Login exitoso",
-      user: {
-        id: user.id,
-        correo: user.correo,
-        rol: user.rol,
-      },
+      user: userSinPassword,
       token,
     });
 
@@ -54,3 +52,4 @@ export const login = async (req, res) => {
     });
   }
 };
+
