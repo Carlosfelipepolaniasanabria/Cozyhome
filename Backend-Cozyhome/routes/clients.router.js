@@ -1,14 +1,10 @@
 import { Router } from "express";
 import { Users } from "../entity/clients.entity.js";
 import { login } from "../controllers/auth.controller.login.js";
-import { body, validationResult } from "express-validator";
-import dotenv from "dotenv";
+import { body } from "express-validator";
 import bcrypt from "bcryptjs";
-dotenv.config();
-
+import { verifyToken } from "../middleware/auth.middleware.js";
 const router = Router();
-
-// ---------------------- REGISTER -------------------------
 router.post(
   "/Register",
   [
@@ -24,48 +20,37 @@ router.post(
   async (req, res) => {
     try {
       const userCreate = req.body;
-
-      // ------------------------------
-      // ENCRIPTAR CONTRASEÑA AQUÍ
-      // ------------------------------
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(userCreate.contrasena, salt);
-
-      // Reemplazar la contraseña original por la encriptada
       userCreate.contrasena = hashedPassword;
-
-      // ------------------------------
-      // ASIGNAR EL ROL AUTOMÁTICO
-      // ------------------------------
       const count = await Users.count();
       const roleToAssign =
         count === 0 ? "admin" : userCreate.rol || "usuario";
-
-      // ------------------------------
-      // CREAR USUARIO
-      // ------------------------------
-      const CreatedUser = await Users.create({
+      const createdUser = await Users.create({
         ...userCreate,
         rol: roleToAssign,
       });
-
       return res.json({
         message: "Usuario registrado correctamente",
-        data: CreatedUser,
+        data: {
+          correo: createdUser.correo,
+          rol: createdUser.rol,
+        },
       });
-
     } catch (error) {
-      console.error("Error al registrar usuario:", error);
+      console.error(error);
       return res.status(500).json({
         error: "No se pudo registrar el usuario",
-        details: error.message,
       });
     }
   }
 );
-
-
-// ---------------------- LOGIN -------------------------
-router.post("/login", login);
-
+router.post("/Login", login);
+router.get("/perfil", verifyToken, (req, res) => {
+  res.json({
+    message: "Acceso permitido",
+    usuario: req.user
+  });
+});
 export default router;
+
