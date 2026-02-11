@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import "./index.css";
 
 export default function Registro() {
     const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ export default function Registro() {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:8000/API/Register", {
+            const res = await fetch("http://localhost:8000/api/clients/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

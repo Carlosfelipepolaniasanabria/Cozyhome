@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import "./index.css";
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -9,7 +10,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8000/API/login", {
+      const response = await fetch("http://localhost:8000/api/clients/Login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -27,14 +28,12 @@ export default function Login() {
         return;
       }
 
-      // ✅ GUARDAR SESIÓN
       localStorage.setItem("user", JSON.stringify(data.user));
       localStorage.setItem("token", data.token);
 
-      // 🔥 AVISAR A TODA LA APP QUE EL USUARIO CAMBIÓ
+ 
       window.dispatchEvent(new Event("userChanged"));
 
-      // ✅ REDIRECCIÓN
       if (data.user.rol === "admin") {
         window.location.href = "/admin";
       } else {
@@ -48,7 +47,7 @@ export default function Login() {
   };
 
   return (
-    <div className="login-page">
+    <div className="login">
       <div className="cozy-login-container"> 
         <div className="cozy-header">
           <h2 className="cozy-title">Welcome back</h2>

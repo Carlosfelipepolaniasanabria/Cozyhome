@@ -8,6 +8,8 @@ import Registro from './pages/Registro';
 import Home from './pages/Home';
 import Productos from './pages/Productos';
 import Sale from './pages/Sale';
+import Pedidos from './pages/Pedidos';
+import Pago from './pages/Pago';
 import AnadirProductos from './pages/Admin/AnadirProductos';
 
 import PrivateRoute from './components/PrivateRoute';
@@ -15,7 +17,6 @@ import PrivateRoute from './components/PrivateRoute';
 export default function MyApp() {
   const [user, setUser] = useState(null);
 
-  // 🔐 Detectar sesión
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -23,7 +24,6 @@ export default function MyApp() {
     }
   }, []);
 
-  // 🚪 Cerrar sesión
   const logout = () => {
     localStorage.clear();
     setUser(null);
@@ -33,7 +33,6 @@ export default function MyApp() {
   return (
     <div>
 
-      {/* NAVBAR */}
       <nav className="navbar navbar-expand-lg cozy-navbar">
         <div className="container-fluid navbar-container">
 
@@ -41,23 +40,22 @@ export default function MyApp() {
             Cozy Home
           </Link>
 
-          <div className="collapse navbar-collapse">
+          <div className="collapse navbar-collapse show">
 
             <div className="navbar-nav me-auto">
               <Link className="nav-link cozy-nav-link" to="/productos">
-                Products
+                Productos
               </Link>
 
-              <a className="nav-link cozy-nav-link" href="#">
-                Inspiration
-              </a>
-
               <Link className="nav-link cozy-nav-link" to="/sale">
-                Sale
+                Compra
+              </Link>
+
+              <Link className="nav-link cozy-nav-link" to="/pedidos">
+                Pedidos Realizados
               </Link>
             </div>
 
-            {/* ZONA DERECHA */}
             <div className="d-flex align-items-center gap-2">
 
               {!user && (
@@ -70,7 +68,7 @@ export default function MyApp() {
 
                   <Link to="/registro">
                     <button className="btn cozy-btn-secondary">
-                      Register
+                      Registrarse
                     </button>
                   </Link>
                 </>
@@ -96,19 +94,27 @@ export default function MyApp() {
         </div>
       </nav>
 
-      {/* RUTAS */}
       <Routes>
+        <Route path="/pago" element={<Pago />} />
         <Route path="/" element={<Home />} />
         <Route path="/productos" element={<Productos />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
 
-        {/* 🔐 RUTA PROTEGIDA */}
         <Route
           path="/sale"
           element={
-            <PrivateRoute>
+            <PrivateRoute user={user}>
               <Sale />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/pedidos"
+          element={
+            <PrivateRoute user={user}>
+              <Pedidos />
             </PrivateRoute>
           }
         />

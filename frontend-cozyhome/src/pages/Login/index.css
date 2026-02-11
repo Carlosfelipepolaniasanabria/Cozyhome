@@ -1,156 +1,100 @@
-/* Login/index.css */
-.cozy-login-container {
-  background: white;
-  padding: 3rem 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 450px;
-  border: 1px solid #e8e2d6;
-  margin: 3rem auto;
+
+.login{
+  margin-top: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f5f7;
+
 }
 
-.cozy-header {
-  text-align: center;
-  margin-bottom: 2rem;
+.cozy-login-container {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
 .cozy-title {
-  color: #2c5530;
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  line-height: 1.2;
-  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #111;
 }
 
 .cozy-subtitle {
-  color: #6b7280;
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 14px;
+  color: #666;
+}
+
+.cozy-link-inline {
+  color: #7a00ff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cozy-link-inline:hover {
+  text-decoration: underline;
 }
 
 .cozy-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
 }
 
 .cozy-input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  margin-bottom: 18px;
 }
 
 .cozy-input-group label {
-  color: #4a5568;
-  font-size: 0.9rem;
-  font-weight: 500;
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
 }
 
 .cozy-input {
-  padding: 14px 16px;
-  border: 2px solid #e8e2d6;
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px;
   border-radius: 8px;
-  font-size: 16px;
-  font-family: inherit;
-  transition: all 0.3s ease;
-  background: #fefdfb;
+  border: 1px solid #ddd;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
 }
 
 .cozy-input:focus {
   outline: none;
-  border-color: #a78c5d;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(167, 140, 93, 0.1);
-}
-
-.cozy-input::placeholder {
-  color: #a0aec0;
-}
-
-/* Estilos para las opciones (Remember me y Forgot password) */
-.cozy-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0.5rem 0;
-}
-
-.cozy-remember {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.cozy-remember input[type="checkbox"] {
-  accent-color: #a78c5d;
-  width: 16px;
-  height: 16px;
-}
-
-.cozy-remember label {
-  color: #4a5568;
-  font-size: 0.9rem;
-  cursor: pointer;
+  border-color: #7a00ff;
+  box-shadow: 0 0 0 2px rgba(122, 0, 255, 0.2);
 }
 
 .cozy-button {
-  padding: 16px;
-  background: linear-gradient(135deg, #a78c5d 0%, #8a6e3d 100%);
-  color: white;
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 10px;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
+  color: #ffffff;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: inherit;
-  margin-top: 1rem;
-  width: 100%;
+  background: linear-gradient(90deg, #7a00ff, #a855f7);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .cozy-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(167, 140, 93, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(122, 0, 255, 0.35);
 }
 
-.cozy-links {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #f0ebe1;
-}
+@media (max-width: 480px) {
+  .cozy-login-container {
+    padding: 24px;
+  }
 
-.cozy-link {
-  color: #a78c5d;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.9rem;
-  transition: color 0.3s ease;
-}
-
-.cozy-link:hover {
-  color: #8a6e3d;
-  text-decoration: underline;
-}
-
-.cozy-link-inline {
-  color: #a78c5d;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.cozy-link-inline:hover {
-  color: #8a6e3d;
-  text-decoration: underline;
-}
-
-/* Fondo específico para la página de login */
-.login-page {
-  background: linear-gradient(135deg, #f5f1e8 0%, #e8ded0 100%) !important;
-  min-height: 100vh;
-  padding: 20px;
+  .cozy-title {
+    font-size: 22px;
+  }
 }

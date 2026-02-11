@@ -1,11 +1,14 @@
+import "./Home.css";
+import { useNavigate } from "react-router-dom";
+
 export default function Home() {
+  const navigate = useNavigate();
+
   return (
     <>
-      {/* Hero Section */}
       <section className="cozy-hero">
         <div className="hero-container">
-          
-          {/* Texto */}
+
           <div className="hero-content">
             <h1 className="hero-title">Bienvenido a Cozy Home</h1>
 
@@ -18,15 +21,19 @@ export default function Home() {
             <div className="hero-divider"></div>
 
             <div className="hero-buttons">
-              <a href="#" className="hero-btn hero-btn-primary">Empieza a comprar</a>
-              <a href="#" className="hero-btn hero-btn-secondary">Explora habitaciones</a>
+              <button
+                className="hero-btn hero-btn-primary"
+                onClick={() => navigate("/productos")}
+              >
+                Empieza a comprar
+              </button>
             </div>
           </div>
 
-          {/* Imagen */}
           <div className="hero-image">
             <img src="/images/inicio.png" alt="Cozy Home Interior" />
           </div>
+
         </div>
       </section>
     </>

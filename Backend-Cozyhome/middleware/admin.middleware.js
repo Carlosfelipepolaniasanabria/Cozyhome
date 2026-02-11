@@ -1,6 +1,5 @@
 export const isAdmin = (req, res, next) => {
   try {
-    // req.user viene del verifyToken
     if (!req.user) {
       return res.status(401).json({
         message: "No autenticado",

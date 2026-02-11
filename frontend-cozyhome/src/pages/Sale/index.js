@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./index.css";
 
 export default function Sale() {
   const [cart, setCart] = useState([]);
@@ -16,63 +17,31 @@ export default function Sale() {
     localStorage.setItem("carrito", JSON.stringify(newCart));
   };
 
-  const total = cart.reduce((sum, p) => sum + Number(p.precio), 0);
+  const total = cart.reduce(
+    (sum, p) => sum + Number(p.precio) * Number(p.cantidad || 1),
+    0
+  );
 
-  const handlePay = async () => {
-    try {
-      console.log("🔥 CLICK PROCESAR PAGO");
-
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (!user) {
-        alert("Debes iniciar sesión");
-        navigate("/login");
-        return;
-      }
-
-      if (cart.length === 0) {
-        alert("Carrito vacío");
-        return;
-      }
-
-      const res = await fetch("http://localhost:8000/api/sales", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          identificacion_usuario: user.identificacion,
-          cart
-        })
-      });
-
-      const data = await res.json();
-      console.log("📡 RESPUESTA BACKEND:", data);
-
-      if (!res.ok) {
-        alert(data.message || "Error al procesar pago");
-        return;
-      }
-
-      alert(`✅ Compra realizada | Venta #${data.id_sale}`);
-      localStorage.removeItem("carrito");
-      setCart([]);
-      navigate("/productos");
-
-    } catch (error) {
-      console.error("❌ ERROR FRONTEND:", error);
-      alert("Error grave al procesar pago");
+  const handleProceedToPayment = () => {
+    if (cart.length === 0) {
+      alert("Carrito vacío");
+      return;
     }
+
+    localStorage.setItem("cartToPay", JSON.stringify(cart));
+    localStorage.setItem("totalToPay", total);
+
+    navigate("/pago");
   };
 
   return (
     <div className="container mt-4">
-      <h2>🛒 Carrito de compras</h2>
+      <h2>Carrito de compras</h2>
+
       {cart.length === 0 ? (
         <>
           <p>No hay productos en el carrito</p>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => navigate("/productos")}
-          >
+          <button className="btn btn-secondary" onClick={() => navigate("/productos")}>
             Volver a productos
           </button>
         </>
@@ -84,6 +53,7 @@ export default function Sale() {
                 <th>Producto</th>
                 <th>Precio</th>
                 <th>Imagen</th>
+                <th>Cantidad</th>
                 <th></th>
               </tr>
             </thead>
@@ -91,20 +61,13 @@ export default function Sale() {
               {cart.map((p, i) => (
                 <tr key={i}>
                   <td>{p.nombre}</td>
-                  <td>${p.precio}</td>
+                  <td>${Number(p.precio).toLocaleString("es-CO")}</td>
                   <td>
-                    <img
-                      src={`http://localhost:8000${p.imagen}`}
-                      width="80"
-                      alt={p.nombre}
-                    />
+                    <img src={`http://localhost:8000${p.imagen}`} width="80" alt={p.nombre} />
                   </td>
+                  <td>{p.cantidad || 1}</td>
                   <td>
-                    <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      onClick={() => removeItem(i)}
-                    >
+                    <button className="btn btn-danger btn-sm" onClick={() => removeItem(i)}>
                       Eliminar
                     </button>
                   </td>
@@ -115,11 +78,7 @@ export default function Sale() {
 
           <h4>Total: ${total.toLocaleString("es-CO")}</h4>
 
-          <button
-            type="button"
-            className="btn btn-success mt-3"
-            onClick={handlePay}
-          >
+          <button className="btn btn-success mt-3" onClick={handleProceedToPayment}>
             Proceder al pago
           </button>
         </>
@@ -127,3 +86,5 @@ export default function Sale() {
     </div>
   );
 }
+
+
