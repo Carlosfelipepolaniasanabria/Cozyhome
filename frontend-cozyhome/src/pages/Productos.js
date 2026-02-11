@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
 import "./Productos.css";
 
 export default function Productos() {
@@ -17,7 +19,13 @@ export default function Productos() {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      alert("Debes iniciar sesión para comprar");
+      
+      Swal.fire({
+        icon: "warning",
+        title: "Acceso requerido",
+        text: "Debes iniciar sesión para comprar",
+        confirmButtonColor: "#7b2ff7"
+      });
       navigate("/login");
       return;
     }
@@ -26,7 +34,12 @@ export default function Productos() {
     carritoActual.push(producto);
     localStorage.setItem("carrito", JSON.stringify(carritoActual));
 
-    alert("Producto agregado al carrito");
+    Swal.fire({
+      icon: "success",
+      title: "Producto agregado",
+      text: "El producto ha sido agregado al carrito",
+      confirmButtonColor: "#7b2ff7"
+    });
   };
 
   useEffect(() => {

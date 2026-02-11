@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./pago.css";
+import Swal from "sweetalert2";
 
 export default function PaymentForm() {
   const [cart, setCart] = useState([]);
@@ -19,53 +20,79 @@ export default function PaymentForm() {
     if (storedTotal) setTotal(Number(storedTotal));
   }, []);
 
-  const handlePayment = async () => {
-    if (!email || !nombres || !apellidos || !numeroDocumento || !celular) {
-      alert("Por favor, completa todos los campos del formulario.");
-      return;
-    }
+ const handlePayment = async () => {
+  if (!email || !nombres || !apellidos || !numeroDocumento || !celular) {
+    Swal.fire({
+      icon: "warning",
+      title: "Campos incompletos",
+      text: "Por favor, completa todos los campos del formulario.",
+      confirmButtonColor: "#7b2ff7"
+    });
+    return;
+  }
 
-    if (cart.length === 0) {
-      alert("Carrito vacío");
-      return;
-    }
+  if (cart.length === 0) {
+    Swal.fire({
+      icon: "warning",
+      title: "Carrito vacío",
+      text: "No hay productos en el carrito.",
+      confirmButtonColor: "#7b2ff7"
+    });
+    return;
+  }
 
-    try {
-      const response = await fetch("http://localhost:8000/api/sales", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          identificacion_usuario: numeroDocumento,
-          cart: cart.map(p => ({
-            id: p.id,
-            nombre: p.nombre,
-            precio: p.precio,
-            cantidad: p.cantidad || 1
-          })),
-          total
-        })
+  try {
+    const response = await fetch("http://localhost:8000/api/sales", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        identificacion_usuario: Number(numeroDocumento), // 🔥 CORREGIDO
+        cart: cart.map(p => ({
+          id: p.id,
+          nombre: p.nombre,
+          precio: Number(p.precio),
+          cantidad: p.cantidad || 1
+        })),
+        total: Number(total)
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      Swal.fire({
+        icon: "error",
+        title: "Error al registrar la venta",
+        text: data.error || data.message || "Ocurrió un problema",
+        confirmButtonColor: "#7b2ff7"
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        alert("Error al registrar la venta: " + data.message);
-        return;
-      }
-
-      alert(`Pago realizado por $${total.toLocaleString("es-CO")} COP\nVenta ID: ${data.id_sale}`);
-
-      localStorage.removeItem("cartToPay");
-      localStorage.removeItem("totalToPay");
-      localStorage.removeItem("carrito");
-      setCart([]);
-      setTotal(0);
-
-    } catch (error) {
-      console.error("ERROR FRONTEND:", error);
-      alert("Ocurrió un error al procesar el pago.");
+      return;
     }
-  };
+
+    Swal.fire({
+      icon: "success",
+      title: "Pago realizado",
+      text: `Pago realizado por $${total.toLocaleString("es-CO")} COP\nVenta ID: ${data.id_sale}`,
+      confirmButtonColor: "#7b2ff7"
+    });
+
+    localStorage.removeItem("cartToPay");
+    localStorage.removeItem("totalToPay");
+    localStorage.removeItem("carrito");
+    setCart([]);
+    setTotal(0);
+
+  } catch (error) {
+    console.error("ERROR FRONTEND:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Ocurrió un error al procesar el pago.",
+      confirmButtonColor: "#7b2ff7"
+    });
+  }
+};
+
 
   return (
     <div className="checkout-container">
@@ -133,7 +160,6 @@ export default function PaymentForm() {
           <strong>${total.toLocaleString("es-CO")}</strong>
         </div>
 
-        {/* 👇 PIE DE PÁGINA */}
         <div className="payment-footer">
           <p><strong>Importante:</strong></p>
           <p>

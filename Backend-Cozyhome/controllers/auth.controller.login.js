@@ -1,5 +1,6 @@
 import { Users } from "../entity/clients.entity.js";
 import jwt from "jsonwebtoken";
+ import bcrypt from "bcryptjs"; // asegúrate de tenerlo arriba
 
 export const login = async (req, res) => {
   try {
@@ -19,11 +20,16 @@ export const login = async (req, res) => {
       });
     }
 
-    if (contrasena !== user.contrasena) {
-  return res.status(401).json({
-    message: "Contraseña incorrecta",
-  });
-}
+   
+
+      const isMatch = await bcrypt.compare(contrasena, user.contrasena);
+
+      if (!isMatch) {
+        return res.status(401).json({
+          message: "Contraseña incorrecta",
+        });
+      }
+
 
 
     const token = jwt.sign(

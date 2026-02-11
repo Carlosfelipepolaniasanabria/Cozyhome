@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Swal from "sweetalert2";
 import "./index.css";
 
 export default function Registro() {
@@ -36,7 +37,12 @@ export default function Registro() {
             const data = await res.json();
 
             if (res.ok) {
-                alert("Usuario registrado correctamente");
+                Swal.fire({
+                    icon: "success",
+                    title: "Registro exitoso",
+                    text: "Usuario registrado correctamente",
+                    confirmButtonColor: "#7b2ff7"
+                });
                 console.log("Datos guardados:", data);
                 setFormData({
                     primer_Nombre: "",
@@ -48,11 +54,21 @@ export default function Registro() {
                     contrasena: "",
                 });
             } else {
-                alert(`Error: ${data.message}`);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: `Error: ${data.message}`,
+                    confirmButtonColor: "#7b2ff7"
+                });
             }
         } catch (error) {
             console.error("Error en el registro:", error);
-            alert("No se pudo conectar con el servidor");
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "No se pudo conectar con el servidor",
+                confirmButtonColor: "#7b2ff7"
+            });
         }
     };
 
