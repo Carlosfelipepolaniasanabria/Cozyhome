@@ -1,5 +1,4 @@
 import { Users } from "../entity/clients.entity.js";
-/* import bcrypt from "bcryptjs"; */
 import jwt from "jsonwebtoken";
 
 export const login = async (req, res) => {
@@ -33,7 +32,6 @@ export const login = async (req, res) => {
       { expiresIn: "2h" }
     );
 
-    // 🔴 NO devolver la contraseña
     const {
       contrasena: _,
       ...userSinPassword

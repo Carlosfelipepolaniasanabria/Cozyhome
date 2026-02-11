@@ -12,10 +12,11 @@ export const SaleDetail = sequelize.define("SaleDetail", {
   id_sale: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: Sale,
-      key: "id_sale",
-    },
+  },
+
+  id_producto: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
 
   nombre_producto: {
@@ -26,10 +27,20 @@ export const SaleDetail = sequelize.define("SaleDetail", {
   precio: {
     type: DataTypes.FLOAT,
     allowNull: false,
-  }
+  },
+
+  cantidad: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
-Sale.hasMany(SaleDetail, { foreignKey: "id_sale" });
-SaleDetail.belongsTo(Sale, { foreignKey: "id_sale" });
+Sale.hasMany(SaleDetail, {
+  foreignKey: "id_sale",
+  as: "detalles",
+});
 
-SaleDetail.sync();
+SaleDetail.belongsTo(Sale, {
+  foreignKey: "id_sale",
+});
+

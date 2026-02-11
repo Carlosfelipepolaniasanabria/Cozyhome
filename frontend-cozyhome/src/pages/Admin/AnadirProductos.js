@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function AdminProductos() {
+export default function AdminPanel() {
   const [productos, setProductos] = useState([]);
+  const [pedidos, setPedidos] = useState([]);
   const [form, setForm] = useState({
     nombre: "",
     descripcion: "",
@@ -12,51 +12,40 @@ function AdminProductos() {
     imagen: null
   });
 
-  const navigate = useNavigate();
-  const API_URL = "http://localhost:8000/api/products";
-
-  const logout = () => {
-    localStorage.clear();
-    navigate("/login");
-  };
+  const API_URL = "http://localhost:8000/api";
+  const token = localStorage.getItem("token");
 
   const cargarProductos = async () => {
-    const res = await axios.get(API_URL);
-    setProductos(res.data);
+    try {
+      const res = await axios.get(`${API_URL}/products`);
+      setProductos(res.data);
+    } catch (error) {
+      console.error(error);
+      alert("Error cargando productos");
+    }
   };
 
-  useEffect(() => {
-    cargarProductos();
-  }, []);
-
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
-  const handleImagen = (e) => {
+  const handleImagen = (e) =>
     setForm({ ...form, imagen: e.target.files[0] });
-  };
 
   const agregarProducto = async (e) => {
     e.preventDefault();
 
-    // 🔥 FormData obligatorio para archivos
     const formData = new FormData();
-    formData.append("nombre", form.nombre);
-    formData.append("descripcion", form.descripcion);
-    formData.append("precio", form.precio);
-    formData.append("categoria", form.categoria);
-    formData.append("imagen", form.imagen);
+    Object.keys(form).forEach(key => {
+      formData.append(key, form[key]);
+    });
 
     try {
-      await axios.post(API_URL, formData, {
+      await axios.post(`${API_URL}/products`, formData, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data"
         }
       });
-
-      cargarProductos();
 
       setForm({
         nombre: "",
@@ -66,105 +55,77 @@ function AdminProductos() {
         imagen: null
       });
 
+      cargarProductos();
     } catch (error) {
-      console.error("Error al crear producto:", error);
-      alert("Error al crear el producto");
+      console.error(error);
+      alert("Error creando producto");
     }
   };
 
   const eliminarProducto = async (id) => {
     if (!window.confirm("¿Eliminar producto?")) return;
 
-    await axios.delete(`${API_URL}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      }
+    await axios.delete(`${API_URL}/products/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
     });
 
     cargarProductos();
   };
 
+  const cargarPedidos = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/sales`);
+      setPedidos(res.data);
+    } catch (error) {
+      console.error(error);
+      alert("Error cargando pedidos");
+    }
+  };
+
+  const cambiarEstado = async (id_sale, estado) => {
+    await axios.put(`${API_URL}/sales/${id_sale}`, { estado });
+    cargarPedidos();
+  };
+
+  useEffect(() => {
+    cargarProductos();
+    cargarPedidos();
+  }, []);
+
   return (
     <div className="container mt-4">
 
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2>Panel Administrador</h2>
-        <button className="btn btn-outline-danger" onClick={logout}>
-          Cerrar sesión
-        </button>
-      </div>
+      <h2>Panel de Administración</h2>
 
-      {/* FORMULARIO */}
+      <h4 className="mt-4">Agregar producto</h4>
+
       <form onSubmit={agregarProducto} className="mb-4">
+        <input className="form-control mb-2" name="nombre" placeholder="Nombre" value={form.nombre} onChange={handleChange} required />
+        <textarea className="form-control mb-2" name="descripcion" placeholder="Descripción" value={form.descripcion} onChange={handleChange} required />
+        <input className="form-control mb-2" type="number" name="precio" placeholder="Precio" value={form.precio} onChange={handleChange} required />
+        <input className="form-control mb-2" name="categoria" placeholder="Categoría" value={form.categoria} onChange={handleChange} required />
+        <input className="form-control mb-2" type="file" onChange={handleImagen} required />
 
-        <input
-          className="form-control mb-2"
-          name="nombre"
-          placeholder="Nombre"
-          value={form.nombre}
-          onChange={handleChange}
-          required
-        />
-
-        <textarea
-          className="form-control mb-2"
-          name="descripcion"
-          placeholder="Descripción"
-          value={form.descripcion}
-          onChange={handleChange}
-          required
-        />
-
-        <input
-          className="form-control mb-2"
-          type="number"
-          name="precio"
-          placeholder="Precio"
-          value={form.precio}
-          onChange={handleChange}
-          required
-        />
-
-        <input
-          className="form-control mb-2"
-          name="categoria"
-          placeholder="Categoría"
-          value={form.categoria}
-          onChange={handleChange}
-          required
-        />
-
-        <input
-          className="form-control mb-2"
-          type="file"
-          name="imagen"
-          accept="image/*"
-          onChange={handleImagen}
-          required
-        />
-
-        {/* PREVIEW */}
         {form.imagen && (
           <img
             src={URL.createObjectURL(form.imagen)}
             alt="preview"
-            style={{ width: "150px", marginBottom: "10px" }}
+            width="120"
           />
         )}
 
-        <button className="btn btn-success w-100">
+        <button className="btn btn-success w-100 mt-2">
           Agregar producto
         </button>
       </form>
 
-      {/* LISTA */}
       <table className="table table-bordered">
         <thead>
           <tr>
             <th>Nombre</th>
             <th>Precio</th>
             <th>Imagen</th>
-            <th>Acción</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -173,11 +134,7 @@ function AdminProductos() {
               <td>{p.nombre}</td>
               <td>${p.precio}</td>
               <td>
-                <img
-                  src={`http://localhost:8000${p.imagen}`}
-                  alt={p.nombre}
-                  width="80"
-                />
+                <img src={`http://localhost:8000${p.imagen}`} width="70" />
               </td>
               <td>
                 <button
@@ -192,10 +149,62 @@ function AdminProductos() {
         </tbody>
       </table>
 
+      <h4 className="mt-5">Pedidos</h4>
+
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Productos</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {pedidos.length === 0 ? (
+            <tr>
+              <td colSpan="6" className="text-center">
+                No hay pedidos
+              </td>
+            </tr>
+          ) : (
+            pedidos.map(p => (
+              <tr key={p.id_sale}>
+                <td>{p.id_sale}</td>
+                <td>{p.identificacion_usuario}</td>
+                <td>${Number(p.total).toLocaleString("es-CO")}</td>
+                <td>{p.estado}</td>
+                <td>
+                  {p.detalles.map(d => (
+                    <div key={d.id_detail}>
+                      {d.nombre_producto} x {d.cantidad}
+                    </div>
+                  ))}
+                </td>
+                <td>
+                  <button
+                    className={`btn btn-sm ${p.estado === "pendiente" ? "btn-success" : "btn-warning"}`}
+                    onClick={() =>
+                      cambiarEstado(
+                        p.id_sale,
+                        p.estado === "pendiente" ? "completada" : "pendiente"
+                      )
+                    }
+                  >
+                    Cambiar estado
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+
     </div>
   );
 }
 
-export default AdminProductos;
 
 

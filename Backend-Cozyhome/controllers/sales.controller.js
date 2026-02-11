@@ -1,51 +1,86 @@
 import { Sale } from "../entity/sale.entity.js";
-import { Users } from "../entity/clients.entity.js";
+import { SaleDetail } from "../entity/saleDetail.entity.js";
 
-// Controller para crear venta
 export const createSale = async (req, res) => {
   try {
-    console.log("💰 BODY RECIBIDO:", req.body);
-
     const { identificacion_usuario, cart } = req.body;
-
-    // Validaciones
-    if (!identificacion_usuario) {
-      return res.status(400).json({ message: "Usuario no definido" });
-    }
 
     if (!cart || cart.length === 0) {
       return res.status(400).json({ message: "Carrito vacío" });
     }
 
-    // Verificar que el usuario existe
-    const user = await Users.findOne({ where: { identificacion: identificacion_usuario } });
-    if (!user) {
-      return res.status(404).json({ message: "Usuario no existe en la base de datos" });
-    }
+    const total = cart.reduce(
+      (sum, p) => sum + Number(p.precio) * Number(p.cantidad),
+      0
+    );
 
-    // Calcular total
-    const total = cart.reduce((sum, p) => sum + Number(p.precio), 0);
-
-    // Crear venta
     const sale = await Sale.create({
       identificacion_usuario,
-      total
+      total,
+      estado: "pendiente",
     });
 
-    console.log("✅ Venta creada:", sale.id_sale);
+    for (const p of cart) {
+      await SaleDetail.create({
+        id_sale: sale.id_sale,
+        id_producto: p.id,
+        nombre_producto: p.nombre,
+        precio: p.precio,
+        cantidad: p.cantidad,
+      });
+    }
 
     res.status(201).json({
-      message: "Venta registrada correctamente",
-      id_sale: sale.id_sale
+      message: "Venta creada correctamente",
+      id_sale: sale.id_sale,
     });
 
   } catch (error) {
-    console.error("❌ ERROR BACKEND:", error);
+    console.error(error);
+    res.status(500).json({ message: "Error al crear la venta" });
+  }
+};
+
+export const getSalesByUser = async (req, res) => {
+  try {
+    const { identificacion } = req.params;
+
+    const sales = await Sale.findAll({
+      where: { identificacion_usuario: identificacion },
+      include: [{ model: SaleDetail, as: "detalles" }],
+      order: [["fecha", "DESC"]],
+    });
+
+    res.json(sales);
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+export const updateSaleStatus = async (req, res) => {
+  const { id } = req.params;
+  const { estado } = req.body;
 
+  try {
+    await Sale.update({ estado }, { where: { id_sale: id } });
+    res.json({ message: "Estado actualizado" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
+export const getAllSales = async (req, res) => {
+  try {
+    const sales = await Sale.findAll({
+      include: [{ model: SaleDetail, as: "detalles" }],
+      order: [["fecha", "DESC"]],
+    });
+
+    
+    res.json(sales);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 

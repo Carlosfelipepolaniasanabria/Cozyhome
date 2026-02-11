@@ -13,7 +13,7 @@ export const createProduct = async (req, res) => {
 
     const imagen = req.file
       ? `/uploads/${req.file.filename}`
-      : "/uploads/default.png"; // ✅ NUNCA NULL
+      : "/uploads/default.png"; 
 
     const product = await Products.create({
       nombre,
