@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function AdminPanel() {
   const [productos, setProductos] = useState([]);
@@ -21,7 +22,12 @@ export default function AdminPanel() {
       setProductos(res.data);
     } catch (error) {
       console.error(error);
-      alert("Error cargando productos");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error cargando productos",
+        confirmButtonColor: "#7b2ff7"
+      });
     }
   };
 
@@ -58,7 +64,12 @@ export default function AdminPanel() {
       cargarProductos();
     } catch (error) {
       console.error(error);
-      alert("Error creando producto");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error creando producto",
+        confirmButtonColor: "#7b2ff7"
+      });
     }
   };
 
