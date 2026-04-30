@@ -1,23 +1,39 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "./index.css";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [form, setForm] = useState({
+    email: '',
+    password: ''
+  });
+
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (loading) return; // evita doble click
+
+    setLoading(true);
+
     try {
-      const response = await fetch("http://localhost:8000/api/clients/Login", {
+      const response = await fetch("https://backend-cozyhome.onrender.com/api/clients/Login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          correo: email,
-          contrasena: password,
+          correo: form.email,
+          contrasena: form.password,
         })
       });
 
@@ -25,30 +41,34 @@ export default function Login() {
 
       if (!response.ok) {
         alert(data.message || data.error || "Error en el login");
+        setLoading(false);
         return;
       }
 
+      // 🔥 Guardado rápido
       localStorage.setItem("user", JSON.stringify(data.user));
       localStorage.setItem("token", data.token);
 
- 
       window.dispatchEvent(new Event("userChanged"));
 
+      // 🔥 SIN RECARGAR LA APP
       if (data.user.rol === "admin") {
-        window.location.href = "/admin";
+        navigate("/admin");
       } else {
-        window.location.href = "/productos";
+        navigate("/productos");
       }
 
     } catch (error) {
       console.error("Error de login:", error);
       alert("No se pudo conectar con el servidor");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="login">
-      <div className="cozy-login-container"> 
+      <div className="cozy-login-container">
         <div className="cozy-header">
           <h2 className="cozy-title">Welcome back</h2>
           <p className="cozy-subtitle">
@@ -63,8 +83,9 @@ export default function Login() {
               <input
                 className="cozy-input"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={form.email}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -74,14 +95,25 @@ export default function Login() {
               <input
                 className="cozy-input"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={form.password}
+                onChange={handleChange}
                 required
               />
             </div>
 
-            <button type="submit" className="cozy-button">
-              Sign in
+            <p style={{ marginTop: "10px" }}>
+              <Link to="/cambiar-contrasena" className="cozy-link-inline">
+                Cambiar contraseña
+              </Link>
+            </p>
+
+            <button 
+              type="submit" 
+              className="cozy-button"
+              disabled={loading}
+            >
+              {loading ? "Entrando..." : "Sign in"}
             </button>
           </form>
         </section>
@@ -89,4 +121,3 @@ export default function Login() {
     </div>
   );
 }
-

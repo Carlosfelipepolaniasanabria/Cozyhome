@@ -11,10 +11,31 @@ export default function Sale() {
     if (storedCart) setCart(JSON.parse(storedCart));
   }, []);
 
-  const removeItem = (index) => {
-    const newCart = cart.filter((_, i) => i !== index);
+  const updateCartStorage = (newCart) => {
     setCart(newCart);
     localStorage.setItem("carrito", JSON.stringify(newCart));
+  };
+
+  const removeItem = (index) => {
+    const newCart = cart.filter((_, i) => i !== index);
+    updateCartStorage(newCart);
+  };
+
+  const increaseQuantity = (index) => {
+    const newCart = [...cart];
+    newCart[index].cantidad = (newCart[index].cantidad || 1) + 1;
+    updateCartStorage(newCart);
+  };
+
+  const decreaseQuantity = (index) => {
+    const newCart = [...cart];
+
+    if ((newCart[index].cantidad || 1) > 1) {
+      newCart[index].cantidad -= 1;
+      updateCartStorage(newCart);
+    } else {
+      removeItem(index);
+    }
   };
 
   const total = cart.reduce(
@@ -41,7 +62,10 @@ export default function Sale() {
       {cart.length === 0 ? (
         <>
           <p>No hay productos en el carrito</p>
-          <button className="btn btn-secondary" onClick={() => navigate("/productos")}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => navigate("/productos")}
+          >
             Volver a productos
           </button>
         </>
@@ -54,6 +78,7 @@ export default function Sale() {
                 <th>Precio</th>
                 <th>Imagen</th>
                 <th>Cantidad</th>
+                <th>Subtotal</th>
                 <th></th>
               </tr>
             </thead>
@@ -63,11 +88,36 @@ export default function Sale() {
                   <td>{p.nombre}</td>
                   <td>${Number(p.precio).toLocaleString("es-CO")}</td>
                   <td>
-                    <img src={`http://localhost:8000${p.imagen}`} width="80" alt={p.nombre} />
+                    <img src={p.imagen} width="80" alt={p.nombre} />
                   </td>
-                  <td>{p.cantidad || 1}</td>
                   <td>
-                    <button className="btn btn-danger btn-sm" onClick={() => removeItem(i)}>
+                    <div className="d-flex align-items-center gap-2">
+                      <button
+                        className="btn btn-sm btn-outline-secondary"
+                        onClick={() => decreaseQuantity(i)}
+                      >
+                        -
+                      </button>
+
+                      <span>{p.cantidad || 1}</span>
+
+                      <button
+                        className="btn btn-sm btn-outline-secondary"
+                        onClick={() => increaseQuantity(i)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </td>
+                  <td>
+                    $
+                    {(Number(p.precio) * Number(p.cantidad || 1)).toLocaleString("es-CO")}
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => removeItem(i)}
+                    >
                       Eliminar
                     </button>
                   </td>
@@ -78,7 +128,10 @@ export default function Sale() {
 
           <h4>Total: ${total.toLocaleString("es-CO")}</h4>
 
-          <button className="btn btn-success mt-3" onClick={handleProceedToPayment}>
+          <button
+            className="btn btn-success mt-3"
+            onClick={handleProceedToPayment}
+          >
             Proceder al pago
           </button>
         </>
@@ -86,5 +139,3 @@ export default function Sale() {
     </div>
   );
 }
-
-

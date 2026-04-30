@@ -2,24 +2,23 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-
 import "./Productos.css";
 
 export default function Productos() {
   const [productos, setProductos] = useState([]);
   const navigate = useNavigate();
+
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/products")
-      .then(res => setProductos(res.data))
-      .catch(err => console.error(err));
+      .get("https://backend-cozyhome.onrender.com/api/products")
+      .then((res) => setProductos(res.data))
+      .catch((err) => console.error(err));
   }, []);
 
   const comprarProducto = (producto) => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      
       Swal.fire({
         icon: "warning",
         title: "Acceso requerido",
@@ -31,8 +30,21 @@ export default function Productos() {
     }
 
     const carritoActual = JSON.parse(localStorage.getItem("carrito")) || [];
-    carritoActual.push(producto);
-    localStorage.setItem("carrito", JSON.stringify(carritoActual));
+    const productoExistente = carritoActual.find((item) => item.id === producto.id);
+
+    let nuevoCarrito;
+
+    if (productoExistente) {
+      nuevoCarrito = carritoActual.map((item) =>
+        item.id === producto.id
+          ? { ...item, cantidad: (item.cantidad || 1) + 1 }
+          : item
+      );
+    } else {
+      nuevoCarrito = [...carritoActual, { ...producto, cantidad: 1 }];
+    }
+
+    localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
 
     Swal.fire({
       icon: "success",
@@ -43,7 +55,6 @@ export default function Productos() {
   };
 
   useEffect(() => {
-
     if (document.getElementById("n8n-chat-loaded")) return;
 
     const link = document.createElement("link");
@@ -65,9 +76,17 @@ export default function Productos() {
         showWelcomeScreen: false,
         initialMessages: [
           "Hola, bienvenido a CozyHome!",
-          "Soy el asistente de CozyHome ",
-          "Puedo ayudarte a elegir productos "
+          "Soy el asistente virtual de CozyHome 🪑",
+          "Por favor coloca tu nombre, correo y número de documento para poder ayudarte mejor"
         ],
+        i18n: {
+          en: {
+            title: "CozyHome",
+            subtitle: "Estamos aquí para ayudarte",
+            getStarted: "Chatea con nosotros",
+            inputPlaceholder: "Escribe tu mensaje..."
+          }
+        }
       });
     `;
 
@@ -84,26 +103,38 @@ export default function Productos() {
 
   return (
     <div className="productos-layout">
-
       <div className="productos-col">
-        <h2 className="mb-4">Productos</h2>
+        <div className="productos-header">
+          <h2 className="mb-4">Productos</h2>
+          <p className="productos-subtitle">
+            Descubre piezas pensadas para transformar tu espacio con estilo y calidez.
+          </p>
+        </div>
 
         <div className="row">
-          {productos.map(p => (
-            <div className="col-md-4 mb-4" key={p.id}>
+          {productos.map((p, index) => (
+            <div
+              className="col-lg-3 col-md-4 col-sm-6 mb-4 producto-item"
+              key={p.id}
+              style={{ animationDelay: `${index * 0.08}s` }}
+            >
               <div className="card h-100 shadow-sm">
-
-                <img
-                  src={`http://localhost:8000${p.imagen}`}
-                  className="card-img-top"
-                  alt={p.nombre}
-                  style={{ height: "200px", objectFit: "cover" }}
-                />
+                <div className="card-image-wrapper">
+                  <img
+                    src={
+                      p.imagen?.includes("cloudinary")
+                        ? p.imagen
+                        : "https://res.cloudinary.com/dv6bumv1s/image/upload/default.jpg"
+                    }
+                    alt={p.nombre}
+                    className="card-img-top"
+                  />
+                </div>
 
                 <div className="card-body">
                   <h5>{p.nombre}</h5>
                   <p>{p.descripcion}</p>
-                  <strong>${p.precio}</strong>
+                  <strong>${Number(p.precio).toLocaleString("es-CO")}</strong>
                 </div>
 
                 <div className="card-footer d-flex gap-2">
@@ -115,13 +146,12 @@ export default function Productos() {
                   </button>
 
                   <button
-                    className="btn btn-outline-secondary"
+                    className="btn btn-outline-secondary cart-button"
                     onClick={() => navigate("/sale")}
                   >
                     🛒
                   </button>
                 </div>
-
               </div>
             </div>
           ))}
@@ -131,11 +161,6 @@ export default function Productos() {
       <div className="chat-col">
         <div id="n8n-chat"></div>
       </div>
-
     </div>
   );
 }
-
-
-
-

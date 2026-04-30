@@ -1,56 +1,114 @@
+/* =========================================
+   ESTILOS PARA LOGIN Y REGISTRO (index.css)
+   ========================================= */
 
-.login-page {
-   margin-top: 1%;
+/* Centrar el formulario en la pantalla */
+.login, .login-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f4f5f7;
-
+  min-height: calc(100vh - 80px); /* Ajusta si tu navbar es más alto/bajo */
+  padding: 2rem;
+  background-color: var(--bg-light, #f8f9fa);
 }
 
-
-@media (min-width: 768px) {
-  .cozy-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .cozy-input-group:nth-child(5),
-  .cozy-input-group:nth-child(6),
-  .cozy-input-group:nth-child(7),
-  .cozy-button {
-    grid-column: span 2;
-  }
+/* Tarjeta principal del formulario */
+.cozy-login-container {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  /* El maxWidth se maneja en el componente (Registro tiene 500px), 
+     pero ponemos un por defecto aquí por si acaso */
+  max-width: 420px; 
 }
 
-.cozy-button {
-  margin-top: 14px;
-}
-
-.cozy-links {
-  margin-top: 18px;
+/* Encabezado */
+.cozy-header {
   text-align: center;
+  margin-bottom: 2rem;
 }
 
-.cozy-link {
-  font-size: 14px;
-  font-weight: 600;
-  color: #7a00ff;
+.cozy-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 0.5rem;
+}
+
+.cozy-subtitle {
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+/* Enlaces (crear cuenta, iniciar sesión, volver) */
+.cozy-link-inline, .cozy-link {
+  color: #7b2ff7; /* Tu color principal */
   text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
 }
 
-.cozy-link:hover {
+.cozy-link-inline:hover, .cozy-link:hover {
+  color: #6320d4;
   text-decoration: underline;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.cozy-links {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* Inputs y Formularios */
+.cozy-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.cozy-input-group {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.cozy-input-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #444444;
+}
+
+.cozy-input {
+  padding: 0.8rem 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cozy-input:focus {
+  outline: none;
+  border-color: #7b2ff7;
+  box-shadow: 0 0 0 3px rgba(123, 47, 247, 0.2);
+}
+
+/* Botón principal */
+.cozy-button {
+  width: 100%;
+  padding: 0.85rem;
+  background-color: #7b2ff7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+}
+
+.cozy-button:hover {
+  background-color: #6320d4;
 }

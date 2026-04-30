@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --color-bg: #f7f4ef;
+  --color-surface: #ffffff;
+  --color-sand: #e8e0d0;
+  --color-beige: #d4c8b0;
+  --color-terracotta: #b87156;
+  --color-bark: #3d2e22;
+  --color-stone: #8a7e72;
+  --color-mist: #f0ebe3;
+
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'DM Sans', sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+
+  --shadow-soft: 0 8px 30px rgba(61,46,34,0.08);
+  --shadow-hover: 0 14px 40px rgba(61,46,34,0.15);
+
+  --transition: 0.35s ease;
+}
+
+/* ---------- PAGE ---------- */
+
+.cambiar-contrasena-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* ---------- CARD ---------- */
+
+.cambiar-contrasena-container {
+  background: var(--color-surface);
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem 2.2rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  animation: fadeSlide 0.6s ease;
+  transition: var(--transition);
+}
+
+.cambiar-contrasena-container:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+/* ---------- TITLE ---------- */
+
+.cambiar-contrasena-container h2 {
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: var(--color-bark);
+  margin-bottom: 1.8rem;
+  position: relative;
+  padding-bottom: 0.7rem;
+}
+
+.cambiar-contrasena-container h2::after {
+  content: "";
+  width: 50px;
+  height: 2px;
+  background: var(--color-terracotta);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+/* ---------- FORM ---------- */
+
+.cambiar-contrasena-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* ---------- LABEL ---------- */
+
+.cambiar-contrasena-container label {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-stone);
+  margin-top: 0.6rem;
+}
+
+/* ---------- INPUT ---------- */
+
+.cambiar-contrasena-container input {
+  background: var(--color-mist);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.8rem;
+  font-size: 0.85rem;
+  transition: var(--transition);
+  font-family: var(--font-sans);
+}
+
+.cambiar-contrasena-container input:focus {
+  outline: none;
+  border-color: var(--color-terracotta);
+  background: var(--color-surface);
+  box-shadow: 0 0 0 3px rgba(184,113,86,0.15);
+}
+
+/* ---------- BUTTON ---------- */
+
+.cambiar-contrasena-container button {
+  margin-top: 1.2rem;
+  background: var(--color-bark);
+  color: var(--color-mist);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.cambiar-contrasena-container button:hover {
+  background: var(--color-terracotta);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(184,113,86,0.3);
+}
+
+/* ---------- ANIMATION ---------- */
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 480px) {
+
+  .cambiar-contrasena-container {
+    padding: 2rem 1.6rem;
+  }
+
+  .cambiar-contrasena-container h2 {
+    font-size: 1.6rem;
+  }
+
+}

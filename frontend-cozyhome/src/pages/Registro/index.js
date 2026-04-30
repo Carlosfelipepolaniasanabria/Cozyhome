@@ -26,7 +26,7 @@ export default function Registro() {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:8000/api/clients/register", {
+            const res = await fetch("https://backend-cozyhome.onrender.com/api/clients/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
