@@ -8,7 +8,6 @@ export default function Home() {
     <>
       <section className="cozy-hero">
         <div className="hero-container">
-
           <div className="hero-content">
             <h1 className="hero-title">Bienvenido a Cozy Home</h1>
 
@@ -27,13 +26,19 @@ export default function Home() {
               >
                 Empieza a comprar
               </button>
+
+              <button
+                className="hero-btn hero-btn-secondary"
+                onClick={() => navigate("/guia")}
+              >
+                Cómo usar la página
+              </button>
             </div>
           </div>
 
           <div className="hero-image">
             <img src="/images/inicio.png" alt="Cozy Home Interior" />
           </div>
-
         </div>
       </section>
     </>

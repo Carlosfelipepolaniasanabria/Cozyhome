@@ -1,88 +1,194 @@
-body {
-  background: #f5f6fb;
-  font-family: Arial, Helvetica, sans-serif;
+/* ============================================
+   PAGO.CSS — Cozy Home | Japandi Aesthetic
+============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --color-bg:         #f7f4ef;
+  --color-surface:    #ffffff;
+  --color-sand:       #e8e0d0;
+  --color-beige:      #d4c8b0;
+  --color-terracotta: #b87156;
+  --color-bark:       #3d2e22;
+  --color-stone:      #8a7e72;
+  --color-mist:       #f0ebe3;
+
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans:  'DM Sans', sans-serif;
+
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --shadow-soft: 0 4px 32px rgba(61,46,34,0.08);
+  --transition:  0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.checkout-container {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  padding: 40px;
+/* 🔥 CONTENEDOR PRINCIPAL (IMPORTANTE) */
+.payment-page {
+  background: var(--color-bg);
+  font-family: var(--font-sans);
+  color: var(--color-bark);
+  min-height: 100vh;
 }
 
-.checkout-form {
-  background: white;
-  padding: 30px;
-  width: 420px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+/* ── CHECKOUT WRAPPER ── */
+.payment-page .checkout-container {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  gap: 3rem;
+  align-items: start;
+  animation: fadeIn 0.5s ease both;
 }
 
-.checkout-form h2 {
-  color: #6b21a8;
-  margin-bottom: 5px;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.subtitle {
-  color: #777;
-  margin-bottom: 20px;
+/* ── FORM SIDE ── */
+.payment-page .checkout-form {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 2.5rem 2.2rem;
 }
 
-.checkout-summary {
-  background: white;
-  padding: 30px;
-  width: 320px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+.payment-page .checkout-form h2 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
 }
 
-label {
+.payment-page .subtitle {
+  font-size: 0.85rem;
+  color: var(--color-stone);
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-sand);
+}
+
+.payment-page label {
   display: block;
-  margin-top: 15px;
-  font-weight: bold;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-stone);
+  margin-top: 1.1rem;
+  margin-bottom: 0.4rem;
 }
 
-input,
-select {
+.payment-page input,
+.payment-page select {
   width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  background: var(--color-mist);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 1rem;
+  font-size: 0.95rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
 }
 
-.row {
+.payment-page input:focus,
+.payment-page select:focus {
+  border-color: var(--color-terracotta);
+  box-shadow: 0 0 0 3px rgba(184,113,86,0.12);
+  background: var(--color-surface);
+  outline: none;
+}
+
+.payment-page .row_pago {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.payment-page .row_pago div {
   display: flex;
-  gap: 15px;
+  flex-direction: column;
 }
 
-.row div {
-  flex: 1;
-}
-
-button {
+/* BOTÓN */
+.payment-page .checkout-form > button {
+  margin-top: 2rem;
   width: 100%;
-  margin-top: 25px;
-  padding: 12px;
-  background: #7c3aed;
-  color: white;
+  background: var(--color-bark);
+  color: var(--color-mist);
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   cursor: pointer;
+  transition: var(--transition);
 }
 
-button:hover {
-  background: #6d28d9;
+.payment-page .checkout-form > button:hover {
+  background: var(--color-terracotta);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(184,113,86,0.3);
 }
 
-.summary-item,
-.summary-total {
+/* ── SUMMARY ── */
+.payment-page .checkout-summary {
+  background: var(--color-mist);
+  border-radius: var(--radius-md);
+  padding: 2rem 1.8rem;
+  position: sticky;
+  top: 2rem;
+  border: 1px solid var(--color-sand);
+}
+
+.payment-page .checkout-summary h3 {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-beige);
+}
+
+.payment-page .summary-item {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--color-sand);
+}
+
+.payment-page .summary-total {
   display: flex;
   justify-content: space-between;
-  margin: 15px 0;
+  margin-bottom: 1.5rem;
 }
 
-.summary-total {
-  font-size: 18px;
+.payment-page .summary-total strong {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: var(--color-terracotta);
+}
+
+.payment-page .payment-footer {
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  padding: 1.2rem;
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .payment-page .checkout-container {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-page .checkout-summary {
+    position: static;
+  }
+
+  .payment-page .row_pago {
+    grid-template-columns: 1fr;
+  }
 }

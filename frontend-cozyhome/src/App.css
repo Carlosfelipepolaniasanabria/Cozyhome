@@ -1,84 +1,202 @@
+/* ============================================
+   APP.CSS — Navbar | Cozy Home | Japandi
+   ============================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --color-bg:         #f7f4ef;
+  --color-surface:    #ffffff;
+  --color-sand:       #e8e0d0;
+  --color-beige:      #d4c8b0;
+  --color-terracotta: #b87156;
+  --color-bark:       #3d2e22;
+  --color-stone:      #8a7e72;
+  --color-mist:       #f0ebe3;
+
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans:  'DM Sans', sans-serif;
+
+  --radius-sm: 8px;
+  --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--color-bg);
+  font-family: var(--font-sans);
+  color: var(--color-bark);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAVBAR ── */
 .cozy-navbar {
-  background: #ffffff;
-  padding: 10px 24px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(247,244,239,0.88) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-sand);
+  transition: background var(--transition), box-shadow var(--transition);
 }
 
-.cozy-navbar a {
-  text-decoration: none !important;
-}
-
-.cozy-navbar a:hover,
-.cozy-navbar a:focus,
-.cozy-navbar a:active {
-  text-decoration: none !important;
+/* Transparent on scroll — add .scrolled via JS if desired */
+.cozy-navbar.scrolled {
+  background: rgba(247,244,239,0.6) !important;
+  box-shadow: 0 2px 20px rgba(61,46,34,0.06);
 }
 
 .navbar-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0.9rem 2rem;
   display: flex;
   align-items: center;
 }
 
-.cozy-nav-link {
-  margin: 0 16px 0 26px;
-  font-weight: 1000;
-  color: #333;
-  font-size: 20px; 
-}
-
-.cozy-brand{
-  font-size: 24px;
-  font-weight: 700;
-  color: #7a00ff;
-}
-
-.navbar .d-flex {
-  align-items: center;
-}
-
-.cozy-btn-primary,
-.cozy-btn-secondary {
-  height: 40px;
-  padding: 0 18px;
-  border-radius: 10px;
+/* ── BRAND ── */
+.cozy-brand {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
   font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: var(--color-bark) !important;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  margin-right: 3rem;
+  transition: color var(--transition);
 }
 
+.cozy-brand:hover {
+  color: var(--color-terracotta) !important;
+}
+
+/* ── NAV LINKS ── */
+.cozy-nav-link {
+  font-family: var(--font-sans) !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-stone) !important;
+  text-decoration: none;
+  padding: 0.4rem 0 !important;
+  margin: 0 1.2rem;
+  position: relative;
+  transition: color var(--transition);
+}
+
+.cozy-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--color-terracotta);
+  transition: width var(--transition);
+}
+
+.cozy-nav-link:hover,
+.cozy-nav-link.active {
+  color: var(--color-bark) !important;
+}
+
+.cozy-nav-link:hover::after,
+.cozy-nav-link.active::after {
+  width: 100%;
+}
+
+/* ── AUTH BUTTONS ── */
 .cozy-btn-primary {
-  margin-bottom: 30%;
-  background: #7a00ff;
-  color: white;
-  border: none;
+  background: var(--color-bark) !important;
+  color: var(--color-mist) !important;
+  border: none !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 0.55rem 1.4rem !important;
+  font-family: var(--font-sans) !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+  text-decoration: none;
 }
 
 .cozy-btn-primary:hover {
-  background: #6500d8;
+  background: var(--color-terracotta) !important;
+  transform: translateY(-1px);
 }
 
 .cozy-btn-secondary {
-  margin-bottom: 20%;
-  background: transparent;
-  color: #7a00ff;
-  border: 2px solid #7a00ff;
+  background: transparent !important;
+  color: var(--color-bark) !important;
+  border: 1.5px solid var(--color-beige) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 0.5rem 1.3rem !important;
+  font-family: var(--font-sans) !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
 }
 
 .cozy-btn-secondary:hover {
-  background: #7a00ff;
-  color: white;
+  border-color: var(--color-bark) !important;
+  background: var(--color-sand) !important;
 }
 
-.navbar button.btn-outline-dark {
-  height: 40px;
-  padding: 0 18px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-}
-
+/* Logout button */
 .btn-outline-dark {
-  margin-bottom: 20px;
+  border-color: var(--color-beige) !important;
+  color: var(--color-bark) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 0.5rem 1.2rem !important;
+  transition: all var(--transition);
+}
+
+.btn-outline-dark:hover {
+  background: var(--color-sand) !important;
+  border-color: var(--color-bark) !important;
+}
+
+/* Greeting */
+.cozy-navbar .me-2 {
+  font-size: 0.88rem;
+  color: var(--color-stone);
+}
+
+.cozy-navbar .me-2 strong {
+  color: var(--color-bark);
+  font-weight: 500;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    padding: 0.8rem 1.2rem;
+  }
+
+  .cozy-brand { margin-right: auto; }
+
+  .navbar-nav {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 0;
+  }
+
+  .cozy-nav-link {
+    margin: 0;
+  }
 }
